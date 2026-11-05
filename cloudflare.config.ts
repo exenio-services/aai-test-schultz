@@ -2,7 +2,7 @@ import { bindings, defineConfig, defineWorker } from "cf/config";
 
 export default defineConfig({
   worker: defineWorker({
-    name: "schulz-heiztechnik",
+    name: "aai-test-schultz",
     entrypoint: "vinext/server/fetch-handler",
     compatibilityDate: "2026-11-05",
     compatibilityFlags: ["nodejs_compat"],
