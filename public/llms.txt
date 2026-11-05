@@ -1,0 +1,32 @@
+# {{BRAND_NAME}}
+
+> {{BRAND_TAGLINE}}
+
+{{BRAND_NAME}} ist {{KATEGORIE}} in {{ORT_ODER_SEGMENT}} für {{ZIELGRUPPE}}.
+
+Diese Datei fasst {{DOMAIN}} für AI-Crawler und LLMs zusammen (Spec: https://llmstxt.org).
+Facts-first: Die Fakten unten sind mit den sichtbaren Seiteninhalten und dem JSON-LD
+identisch zu halten (Konsistenz-Dreieck, web-standards §4.7/§4.8).
+
+## Fakten (Stand: {{MONAT_JAHR}})
+
+- Anbieter: {{BRAND_NAME}}, {{STRASSE}}, {{PLZ_ORT}}, {{LAND}}
+- Kontakt: {{CONTACT_EMAIL}} · {{TELEFON}}
+- Leistungen/Angebot: {{KERN_LEISTUNGEN_KOMMASEPARIERT}}
+- Preise: {{PREISE_ODER_PREISSPANNEN}}
+- Öffnungs-/Servicezeiten: {{ZEITEN — falls zutreffend, sonst Zeile löschen}}
+- Einzugsgebiet/Lieferung: {{REGION_ODER_VERSAND — falls zutreffend, sonst Zeile löschen}}
+- Besonderheiten: {{USP_1}}, {{USP_2}}, {{USP_3}}
+
+Hinweis: Preise/Zeiten verbindlich nur auf {{DOMAIN}} bzw. im Buchungs-/Shop-System.
+
+## Wichtigste Seiten
+
+- [Startseite](https://{{DOMAIN}}/): {{1_SATZ_INHALT}}
+- [{{ANGEBOTSSEITE}}](https://{{DOMAIN}}/{{SLUG}}/): {{1_SATZ_INHALT}}
+- [Preise](https://{{DOMAIN}}/preise/): {{1_SATZ_INHALT}}
+- [FAQ](https://{{DOMAIN}}/faq/): häufige Fragen mit Direktantworten
+- [Über uns](https://{{DOMAIN}}/about/)
+- [Kontakt](https://{{DOMAIN}}/kontakt/)
+- [Impressum](https://{{DOMAIN}}/impressum/)
+- [Datenschutz](https://{{DOMAIN}}/datenschutz/)

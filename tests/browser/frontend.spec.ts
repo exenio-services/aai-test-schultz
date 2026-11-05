@@ -1,0 +1,40 @@
+import { test, expect } from '@playwright/test';
+test('Schulz frontend, login frontend and honest form on desktop and mobile', async ({ page, request }) => {
+ const errors: string[] = [], failedAssets: string[] = [], forbiddenRequests: string[] = [];
+ let formRequests = 0;
+ page.on('request', req => { if (/fonts\.googleapis\.com|fonts\.gstatic\.com|supabase\.co/.test(req.url())) forbiddenRequests.push(req.url()); if (req.url().endsWith('/api/anfrage')) formRequests++; });
+ page.on('pageerror', error => errors.push(error.message));
+ page.on('response', response => { if (response.url().includes('/_next/static/') && response.status() >= 400) failedAssets.push(`${response.status()} ${response.url()}`); });
+ await page.goto('/');
+ await expect(page.locator('body')).not.toContainText('ERA Residence');
+ await expect(page.getByText('Kurs-Demo, kein echtes Angebot. Kontaktdaten sind Platzhalter.')).toHaveCount(0);
+ for (const width of [1440, 1024, 390]) {
+  await page.setViewportSize({ width, height: 800 });
+  await expect(page.locator('header').getByRole('link', { name: 'Anmelden', exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `/tmp/schulz-frontend-${width}.png` });
+ }
+ await page.locator('header').getByRole('link', { name: 'Anmelden', exact: true }).click();
+ await expect(page).toHaveURL(/\/verwaltung$/);
+ await expect(page.getByRole('heading', { level: 1 })).toHaveText(process.env.FRONTEND_EXPECT_HEADING ?? 'Anmelden');
+ await expect(page.getByLabel('E-Mail-Adresse', { exact: true })).toBeVisible();
+ await expect(page.getByLabel('Passwort', { exact: true })).toBeVisible();
+ expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+ await page.screenshot({ path: '/tmp/schulz-frontend-verwaltung-390.png' });
+ await page.getByLabel('E-Mail-Adresse', { exact: true }).fill('erika@example.invalid');
+ await page.getByLabel('Passwort', { exact: true }).fill('nur-test-kein-echtes-passwort');
+ await page.getByRole('button', { name: 'Anmelden', exact: true }).click();
+ await expect(page.getByRole('status')).toContainText('Anmeldung ist noch nicht verbunden');
+ await page.reload(); await expect(page.getByRole('heading', { level: 1 })).toHaveText('Anmelden');
+ await page.getByRole('link', { name: 'Zur Website' }).click();
+ await expect(page.getByText('Übungsstand: Die Datenspeicherung verbinden wir gemeinsam.')).toBeVisible();
+ await page.getByLabel('Ihr Name', { exact: true }).fill('Erika Muster');
+ await page.getByLabel('Ihre E-Mail-Adresse', { exact: true }).fill('erika@example.invalid');
+ await page.getByLabel('Ihr Anliegen', { exact: true }).fill('Fiktive Übungsanfrage');
+ await page.getByRole('button', { name: 'Anfrage absenden' }).click();
+ await expect(page.getByRole('status')).toContainText('Datenspeicherung verbinden wir gemeinsam');
+ await expect(page.getByRole('status')).not.toContainText('Vielen Dank');
+ const result = await request.post('/api/anfrage', { data: null });
+ expect(result.status()).toBe(503); expect((await result.json()).ok).toBe(false);
+ expect(errors).toEqual([]); expect(failedAssets).toEqual([]); expect(forbiddenRequests).toEqual([]); expect(formRequests).toBe(0);
+});

@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* Existing Google Fonts, served locally on both Next.js and vinext. */
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("/fonts/montserrat-latin.woff2") format("woff2"); }
+@font-face { font-family: "Open Sans"; font-style: normal; font-weight: 300 800; font-display: swap; src: url("/fonts/open-sans-latin.woff2") format("woff2"); }
+
+/* Farben und Schriften aus der Business DNA (Feld 6). */
+@theme {
+  --color-primary: #93c11c;
+  --color-primary-dark: #5f7f0e;
+  --color-accent: #13aff0;
+  --color-accent-dark: #0b7fb0;
+  --color-ink: #181717;
+  --color-mist: #f5f8ee;
+  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* Lenis (weiches Scrollen) braucht diese Regeln, damit das Layout stabil bleibt. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Reduzierte Bewegung: keine Animationen, Inhalte bleiben sichtbar. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
